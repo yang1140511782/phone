@@ -4,6 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<title>Document</title>
+	<script type="text/javascript">
+		document.documentElement.style.fontSize = innerWidth/16 + "px";
+	</script>
 	<style type="text/css">
 		html,body{
 			width: 100%;
@@ -15,7 +18,7 @@
 		}
 		body{
 			box-sizing: border-box;
-			padding-top:50px; 
+			padding-top:12rem; 
 			padding-bottom:50px; 
 		}
 		header{
@@ -42,12 +45,20 @@
 			position:fixed;
 			bottom:0;
 		}
+
+		img{
+			width: 100%;
+			position: fixed;
+			top : 2rem;
+		}
 	</style>
 	<script src="js/vue.js"></script>
 </head>
 <body>
 	<header></header>
-
+	<div id="banner">
+		<img src="15.jpg">
+	</div>
 	<section>
 		<ul>
 			<li>32131</li>
