@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.js"></script>
+</head>
+<body>
+	<div id="box">
+		<input type="text" v-model="name">
+		<input type="text" v-model="title">
+		<button type="button" @click="add">添加</button>
+		<ul>
+			<li v-for="(item, index) in list">
+				<span>{{item.id}}</span>
+				<span>{{item.name}}</span>
+				<span>{{item.description}}</span>
+				<span @click="del(item.id)">删除</span>
+				<span @click="modify(index)">修改</span>
+				<span @click="update(item.id)">确认修改</span>
+			</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		new Vue({
+			el : "#box",
+			data(){
+				return {list : [], name : "", title : ""}
+			},
+			created(){
+				this.getData();
+			},
+			methods : {
+				getData(){
+					axios.get('http://localhost:3000/companies', {
+						params : {
+/*							_page : 1,
+							_limit : 2*/
+						}
+						}).then((res)=>{
+							this.list = res.data
+					})
+				},
+				add(){
+					axios.post('http://localhost:3000/companies', {
+							name : this.name,
+							description : this.title
+
+						}, {headers : {
+							"Content-Type" : "application/json"
+						}
+						}).then((res)=>{
+						console.log(res)
+						this.getData();
+					})
+				},
+				del(id){
+					if(confirm("确定删除")){
+						axios.delete('http://localhost:3000/companies/'+id).then((res)=>{
+							this.getData();
+						})
+					}
+				},
+				modify(id){
+					axios.get('http://localhost:3000/companies/').then((res)=>{
+							this.list = res.data
+							this.name = res.data[id].name
+							this.title = res.data[id].description;
+					});
+				},
+				update(id){
+					axios.patch('http://localhost:3000/companies/' + id, {
+							name : this.name,
+							description : this.title,
+						}, {headers : {
+							"Content-Type" : "application/json"
+						}
+						}).then((res)=>{
+							console.log(res);
+							this.getData();
+					})
+				}
+
+			}
+		})
+	</script>
+</body>
+</html>
